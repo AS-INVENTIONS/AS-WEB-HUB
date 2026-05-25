@@ -142,6 +142,7 @@
     const defaultRules = "You are 'AS-AI', the official digital intelligence of 'AS-WEB-HUB' by 'AS-INVENTIONS'. Always mention precise button locations. Respond in Malayalam.";
 
     document.getElementById('apiKey').value = localStorage.getItem('hub_api_key') || "";
+    document.getElementById('cloudUrl').value = localStorage.getItem('hub_cloud_url') || "";
     document.getElementById('modelName').value = localStorage.getItem('hub_model_name') || "gemini-flash-lite-latest";
     document.getElementById('sysInst').value = localStorage.getItem('hub_sys_inst') || defaultRules;
 
@@ -152,10 +153,12 @@
     }
 
     function saveSettings() {
-        localStorage.setItem('hub_api_key', document.getElementById('apiKey').value);
-        localStorage.setItem('hub_model_name', document.getElementById('modelName').value);
-        localStorage.setItem('hub_sys_inst', document.getElementById('sysInst').value);
-        updateLog("Config saved.", "cyan");
+    localStorage.setItem('hub_api_key', document.getElementById('apiKey').value);
+    localStorage.setItem('hub_model_name', document.getElementById('modelName').value);
+    localStorage.setItem('hub_sys_inst', document.getElementById('sysInst').value);
+    // പുതിയ വരി:
+    localStorage.setItem('hub_cloud_url', document.getElementById('cloudUrl').value);
+    updateLog("Config and Backup URL saved.", "cyan");
     }
 
     function handleDragStart(e, index) { draggedIndex = index; e.dataTransfer.effectAllowed = 'move'; }
@@ -316,7 +319,12 @@
             localStorage.setItem('hub_sys_inst', data.systemInstruction);
             document.getElementById('sysInst').value = data.systemInstruction;
         }
-        renderHome();
+        if (data.cloudBackupUrl) {
+        localStorage.setItem('hub_cloud_url', data.cloudBackupUrl);
+        document.getElementById('cloudUrl').value = data.cloudBackupUrl;
+    }
+    renderHome();
+       
     }
 
     function openMenu(index) { activeServiceIndex = index; document.getElementById('menu-title').innerText = services[index].name; renderNotes(); showPage('service-menu'); }
@@ -333,18 +341,19 @@
     }
 
     function exportData() {
-        const dataToExport = {
-            services: services,
-            notes: userNotes,
-            systemInstruction: localStorage.getItem('hub_sys_inst') || ""
-        };
-        const blob = new Blob([JSON.stringify(dataToExport)], { type: 'application/json' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `backup_as_hub.json`;
-        a.click();
-        updateLog("Backup ready.", "yellow");
-    }
+    const dataToExport = {
+        services: services,
+        notes: userNotes,
+        systemInstruction: localStorage.getItem('hub_sys_inst') || "",
+        cloudBackupUrl: localStorage.getItem('hub_cloud_url') || "" // ലിങ്ക് ഇവിടെ ചേർക്കുന്നു
+    };
+    const blob = new Blob([JSON.stringify(dataToExport)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `backup_as_hub.json`;
+    a.click();
+    updateLog("Full backup ready.", "yellow");
+}
 
     function openMasterGuide() { document.getElementById('modal-title').innerText = services[activeServiceIndex].name; document.getElementById('modal-content').innerHTML = marked.parse(services[activeServiceIndex].guide || "No guide."); document.getElementById('full-view').style.display = 'flex'; }
     function closeFullView() { document.getElementById('full-view').style.display = 'none'; }
