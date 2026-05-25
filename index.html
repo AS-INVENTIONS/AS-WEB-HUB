@@ -145,7 +145,9 @@
     document.getElementById('cloudUrl').value = localStorage.getItem('hub_cloud_url') || "";
     document.getElementById('modelName').value = localStorage.getItem('hub_model_name') || "gemini-flash-lite-latest";
     document.getElementById('sysInst').value = localStorage.getItem('hub_sys_inst') || defaultRules;
-
+    // ഡിഫോൾട്ട് ക്ലൗഡ് ലിങ്ക് സെറ്റ് ചെയ്യുന്നു
+    const defaultBackupUrl = "https://github.com/AS-INVENTIONS/AS-WEB-HUB/blob/main/AS_HUB_Backup.json";
+    document.getElementById('cloudUrl').value = localStorage.getItem('hub_cloud_url') || defaultBackupUrl;
     function updateLog(msg, color = "var(--accent)") {
         const log = document.getElementById('devLog');
         log.innerHTML += `<br><span style="color:${color}">> ${msg}</span>`;
@@ -266,6 +268,7 @@
         if(editIndex === -1) services.push({name, link, guide});
         else { services[editIndex] = {name, link, guide}; resetForm(); }
         localStorage.setItem('myServices', JSON.stringify(services));
+
         renderHome(); showPage('home');
     }
 
@@ -359,7 +362,15 @@
     function closeFullView() { document.getElementById('full-view').style.display = 'none'; }
     function deleteService(index) { if(confirm("Delete?")) { services.splice(index, 1); localStorage.setItem('myServices', JSON.stringify(services)); renderHome(); } }
     function launchMiniApp() { window.open(window.location.href, "ASHubMini", "width=420,height=750,menubar=no,status=no"); }
-
+    // ആപ്പ് ഓപ്പൺ ചെയ്യുമ്പോൾ തനിയെ ക്ലൗഡ് സിങ്ക് ചെയ്യാൻ
+    window.onload = () => {
+    const currentCloudUrl = document.getElementById('cloudUrl').value;
+    // ലോക്കൽ സ്റ്റോറേജ് കാലിയാണെങ്കിൽ മാത്രം ഓട്ടോ സിങ്ക് ചെയ്യുക (ഇല്ലെങ്കിൽ നിങ്ങളുടെ മാറ്റങ്ങൾ ഓവർറൈറ്റ് ചെയ്യപ്പെടും)
+    if (currentCloudUrl && services.length === 0) {
+        updateLog("ലോക്കൽ ഡാറ്റ ലഭ്യമല്ല, ക്ലൗഡിൽ നിന്ന് സിങ്ക് ചെയ്യുന്നു...", "yellow");
+        fetchFromCloud();
+    }
+};
     renderHome();
 </script>
 </body>
