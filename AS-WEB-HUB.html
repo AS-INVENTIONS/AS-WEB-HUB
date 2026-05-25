@@ -10,32 +10,43 @@
         :root {
             --bg: #0a0a0a; --accent: #00ff41; --blue: #00d4ff; --card: #151515; --text: #ffffff; --gray: #888;
         }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; }
-        header { background: #000; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--blue); }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        
+        header { background: #000; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--blue); box-shadow: 0 4px 10px rgba(0, 212, 255, 0.2); }
         .brand-name { font-size: 1.5rem; font-weight: 800; color: var(--blue); }
         .brand-name span { color: var(--accent); }
-        nav .nav-btn { background: none; border: 1px solid var(--blue); color: var(--blue); padding: 8px 18px; cursor: pointer; border-radius: 4px; font-weight: bold; margin-left: 10px; transition: 0.3s; }
-        .nav-btn.active { background: var(--blue); color: #000; }
-        .container { flex: 1; overflow-y: auto; padding: 20px; }
+        nav .nav-btn { background: none; border: 1px solid var(--blue); color: var(--blue); padding: 8px 18px; cursor: pointer; border-radius: 6px; font-weight: bold; margin-left: 10px; transition: 0.3s; }
+        .nav-btn.active { background: var(--blue); color: #000; box-shadow: 0 0 10px var(--blue); }
+        
+        #launch-box { background: linear-gradient(45deg, #00d4ff, #00ff41); color: #000; padding: 12px; text-align: center; font-weight: 900; cursor: pointer; border-radius: 0 0 12px 12px; margin: 0 20px 20px 20px; transition: 0.3s; box-shadow: 0 4px 15px rgba(0, 255, 65, 0.2); }
+        #launch-box:hover { transform: scale(1.01); filter: brightness(1.1); }
+
+        .container { flex: 1; overflow-y: auto; padding: 0 20px 20px 20px; }
         .page { display: none; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .search-box { width: 100%; background: #111; border: 1px solid #333; color: white; padding: 15px; border-radius: 10px; margin-bottom: 25px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .search-box { width: 100%; background: #111; border: 1px solid #333; color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; outline: none; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: var(--card); padding: 25px; border-radius: 15px; border-left: 6px solid var(--blue); position: relative; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); }
+        
+        .card { background: var(--card); padding: 25px; border-radius: 15px; border-left: 5px solid var(--blue); position: relative; transition: 0.3s; cursor: grab; }
+        .card:active { cursor: grabbing; opacity: 0.8; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.4); border-left-color: var(--accent); }
+        
         .dev-container { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
         @media (max-width: 900px) { .dev-container { grid-template-columns: 1fr; } }
-        .dev-panel { background: #111; padding: 25px; border-radius: 12px; border: 1px solid #222; }
-        input, textarea { width: 100%; background: #1a1a1a; border: 1px solid #333; color: var(--accent); padding: 12px; margin-bottom: 12px; border-radius: 6px; box-sizing: border-box; }
+        .dev-panel { background: #111; padding: 25px; border-radius: 15px; border: 1px solid #222; }
+        
+        input, textarea { width: 100%; background: #1a1a1a; border: 1px solid #333; color: var(--accent); padding: 12px; margin-bottom: 12px; border-radius: 8px; box-sizing: border-box; outline: none; }
         .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-bottom: 10px; transition: 0.3s; }
         .btn-web { background: var(--blue); color: #000; }
         .btn-ai { background: var(--accent); color: #000; }
-        .list-btn { background: var(--blue) !important; color: #000 !important; border: none !important; font-weight: bold; border-radius: 8px; height: 40px; padding: 0 15px; cursor: pointer; }
-        .list-btn:hover { filter: brightness(1.2); }
-        .terminal { background: #000; padding: 10px; border-radius: 5px; height: 120px; overflow-y: auto; font-family: monospace; font-size: 11px; color: var(--accent); border: 1px solid #222; }
-        footer { text-align: center; padding: 15px; font-size: 12px; color: var(--gray); border-top: 1px solid #222; }
-        .file-input-label { display: block; font-size: 11px; color: var(--blue); margin-bottom: 5px; margin-top: 10px; font-weight: bold; }
+        .btn:hover { filter: brightness(1.2); transform: scale(1.02); }
+
+        .list-btn { background: var(--blue) !important; color: #000 !important; border: none !important; font-weight: bold; border-radius: 8px; height: 44px; padding: 0 20px; cursor: pointer; }
+        .terminal { background: #000; padding: 12px; border-radius: 8px; height: 130px; overflow-y: auto; font-family: 'Consolas', monospace; font-size: 12px; color: var(--accent); border: 1px solid #222; margin-top: 10px; }
+        footer { text-align: center; padding: 15px; font-size: 11px; color: var(--gray); border-top: 1px solid #222; }
+        .file-input-label { display: block; font-size: 11px; color: var(--blue); margin: 10px 0 5px 0; font-weight: bold; }
         input[type="file"]::file-selector-button { background: #222; color: var(--accent); border: 1px solid var(--accent); padding: 8px 15px; border-radius: 6px; cursor: pointer; margin-right: 10px; transition: 0.3s; }
     </style>
 </head>
@@ -49,6 +60,10 @@
     </nav>
 </header>
 
+<div id="launch-box" onclick="launchMiniApp()">
+    <i class="fas fa-rocket"></i> LAUNCH AS-HUB MINI APP MODE
+</div>
+
 <div class="container">
     <section id="home-page" class="page active">
         <input type="text" class="search-box" id="homeSearch" placeholder="സേവനങ്ങൾ തിരയുക..." onkeyup="renderHome()">
@@ -56,16 +71,16 @@
     </section>
 
     <section id="service-menu-page" class="page">
-        <button class="nav-btn" style="margin: 0 0 20px 0; border-color: var(--gray); color: var(--gray);" onclick="showPage('home')">BACK</button>
+        <button class="nav-btn" style="margin-bottom: 20px; border-color: var(--gray); color: var(--gray);" onclick="showPage('home')"><i class="fas fa-chevron-left"></i> BACK</button>
         <h2 id="menu-title" style="color:var(--blue)"></h2>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <button class="btn btn-web" onclick="openMasterGuide()">GENERAL GUIDE</button>
-            <button class="btn btn-ai" onclick="document.getElementById('note-input').focus()">ASK AS-AI</button>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+            <button class="btn btn-web" onclick="openMasterGuide()"><i class="fas fa-book-open"></i> MASTER GUIDE</button>
+            <button class="btn btn-ai" onclick="document.getElementById('note-input').focus()"><i class="fas fa-robot"></i> ASK AS-AI</button>
         </div>
-        <div style="background:#111; padding:20px; border-radius:10px; margin-top:15px; border: 1px solid #222;">
+        <div style="background:#111; padding:20px; border-radius:15px; margin-top:20px; border: 1px solid #222;">
             <input type="text" id="note-input" placeholder="എന്ത് സഹായമാണ് വേണ്ടത്?">
-            <button class="btn btn-ai" onclick="createPersonalNote()">GENERATE AI GUIDANCE</button>
-            <div id="noteLoader" style="display:none; color:var(--accent); font-size:12px; margin-bottom:10px;">AS-AI മറുപടി തയ്യാറാക്കുന്നു...</div>
+            <button class="btn btn-ai" onclick="createPersonalNote()">GENERATE AI NOTE</button>
+            <div id="noteLoader" style="display:none; color:var(--accent); font-size:12px; margin-bottom:10px;"><i class="fas fa-spinner fa-spin"></i> AS-AI മറുപടി തയ്യാറാക്കുന്നു...</div>
             <div id="notes-list"></div>
         </div>
     </section>
@@ -73,42 +88,41 @@
     <section id="dev-page" class="page">
         <div class="dev-container">
             <div class="dev-panel">
-                <h4 style="color:var(--blue); margin-top:0;">1. AI System Settings</h4>
+                <h4 style="color:var(--blue); margin-top:0;"><i class="fas fa-user-shield"></i> 1. AI System Settings</h4>
                 <input type="password" id="apiKey" placeholder="Gemini API Key">
                 <div style="display:flex; gap:10px; align-items: center; margin-bottom: 12px;">
                     <input type="text" id="modelName" placeholder="Model Name" value="gemini-flash-lite-latest" style="margin-bottom:0;">
                     <button class="list-btn" onclick="listModels()">LIST</button>
                 </div>
-                <!-- System Instruction Section Added -->
                 <label class="file-input-label">SYSTEM AI RULES (IDENTITY)</label>
-                <textarea id="sysInst" rows="3" placeholder="System rules..."></textarea>
-                <button class="btn btn-web" onclick="saveSettings()">SAVE SETTINGS</button>
+                <textarea id="sysInst" rows="3" placeholder="AI behavior rules..."></textarea>
+                <button class="btn btn-web" onclick="saveSettings()">SAVE SYSTEM CONFIG</button>
                 
                 <hr style="border: 1px solid #222;">
-                <h4 style="color:var(--accent)">2. Data Backup & Sync</h4>
-                <span class="file-input-label">IMPORT FROM LOCAL (.JSON)</span>
+                <h4 style="color:var(--accent)"><i class="fas fa-sync"></i> 2. Backup & Cloud Sync</h4>
+                <span class="file-input-label">IMPORT LOCAL JSON</span>
                 <input type="file" id="localFileInput" accept=".json" onchange="importLocalBackup(event)">
-                <span class="file-input-label">FETCH FROM GITHUB (RAW URL)</span>
-                <input type="text" id="cloudUrl" placeholder="Paste RAW GitHub Link">
-                <button class="btn btn-web" style="background:var(--accent); font-size: 12px;" onclick="fetchFromCloud()">SYNC FROM CLOUD</button>
+                <span class="file-input-label">GITHUB CLOUD SYNC (RAW URL)</span>
+                <input type="text" id="cloudUrl" placeholder="Paste RAW GitHub URL">
+                <button class="btn btn-web" style="background:var(--accent); color:#000;" onclick="fetchFromCloud()">SYNC FROM CLOUD</button>
                 <button class="btn btn-web" style="background:transparent; border:1px solid var(--blue); color:var(--blue); margin-top:10px;" onclick="exportData()">DOWNLOAD BACKUP</button>
-                <div class="terminal" id="devLog">> AS-INVENTIONS System ready.</div>
+                <div class="terminal" id="devLog">> AS-System Ready.</div>
             </div>
             
             <div class="dev-panel">
-                <h4 id="form-title" style="color:var(--blue); margin-top:0;">3. Manage Service</h4>
+                <h4 id="form-title" style="color:var(--blue); margin-top:0;"><i class="fas fa-plus-circle"></i> 3. Manage Hub Services</h4>
                 <input type="text" id="sName" placeholder="Service Name">
                 <input type="text" id="sUrl" placeholder="Website URL">
-                <button class="btn btn-ai" style="background:#222; color:var(--accent); border:1px solid var(--accent)" onclick="generateMasterGuide()">AI AUTO-GENERATE GUIDE</button>
-                <textarea id="sGuide" rows="6" placeholder="Service Guide Content"></textarea>
+                <button class="btn btn-ai" style="background:#222; color:var(--accent); border:1px solid var(--accent)" onclick="generateMasterGuide()"><i class="fas fa-magic"></i> AI AUTO-GENERATE GUIDE</button>
+                <textarea id="sGuide" rows="6" placeholder="Service Manual Content"></textarea>
                 <button class="btn btn-ai" id="saveBtn" onclick="addNewService()">SAVE TO HUB</button>
-                <button class="btn btn-cancel" id="cancelBtn" style="display:none; background:#333; color:#fff" onclick="resetForm()">CANCEL EDIT</button>
+                <button class="btn btn-cancel" id="cancelBtn" style="display:none; background:#333; color:#fff" onclick="resetForm()">DISCARD CHANGES</button>
             </div>
         </div>
     </section>
 </div>
 
-<footer>&copy; 2024 AS-INVENTIONS | Digital Hub Pro</footer>
+<footer>&copy; 2024 AS-INVENTIONS | Professional Digital Hub Core</footer>
 
 <div id="full-view" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); flex-direction:column; z-index:3000;">
     <div style="padding:20px; background:#000; border-bottom:1px solid #333; display:flex; justify-content:space-between; align-items:center;">
@@ -123,9 +137,9 @@
     let userNotes = JSON.parse(localStorage.getItem('userNotesHub')) || {};
     let activeServiceIndex = null;
     let editIndex = -1;
+    let draggedIndex = null;
 
-    // Default System Instruction logic
-    const defaultRules = "You are 'AS-AI', the intelligent core of 'AS-WEB-HUB' by 'AS-INVENTIONS'. Use your Google search knowledge to identify website layouts. Always mention specific button locations (e.g., top-right corner, main menu). Respond in Malayalam primarily but use English for UI terms. Be professional.";
+    const defaultRules = "";
 
     document.getElementById('apiKey').value = localStorage.getItem('hub_api_key') || "";
     document.getElementById('modelName').value = localStorage.getItem('hub_model_name') || "gemini-flash-lite-latest";
@@ -141,25 +155,19 @@
         localStorage.setItem('hub_api_key', document.getElementById('apiKey').value);
         localStorage.setItem('hub_model_name', document.getElementById('modelName').value);
         localStorage.setItem('hub_sys_inst', document.getElementById('sysInst').value);
-        updateLog("AI configuration and System Rules saved.", "cyan");
+        updateLog("Config saved.", "cyan");
     }
 
-    async function listModels() {
-        const key = document.getElementById('apiKey').value;
-        if(!key) return alert("Enter API Key first!");
-        updateLog("Fetching available models...");
-        try {
-            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
-            const data = await res.json();
-            data.models.forEach(m => updateLog(`Found: ${m.name.replace('models/','')}`, "cyan"));
-        } catch (e) { updateLog("Failed to list models.", "red"); }
-    }
-
-    function showPage(page) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(page + '-page').classList.add('active');
-        if(document.getElementById('btn-'+page)) document.getElementById('btn-'+page).classList.add('active');
+    function handleDragStart(e, index) { draggedIndex = index; e.dataTransfer.effectAllowed = 'move'; }
+    function handleDragOver(e) { e.preventDefault(); return false; }
+    function handleDrop(e, toIndex) {
+        e.preventDefault();
+        if (draggedIndex === toIndex) return;
+        const movedItem = services.splice(draggedIndex, 1)[0];
+        services.splice(toIndex, 0, movedItem);
+        localStorage.setItem('myServices', JSON.stringify(services));
+        renderHome();
+        updateLog("Card reordered.");
     }
 
     function renderHome() {
@@ -168,10 +176,10 @@
         grid.innerHTML = '';
         services.forEach((s, i) => {
             if(s.name.toLowerCase().includes(term)) {
-                grid.innerHTML += `<div class="card">
+                grid.innerHTML += `<div class="card" draggable="true" ondragstart="handleDragStart(event, ${i})" ondragover="handleDragOver(event)" ondrop="handleDrop(event, ${i})">
                     <h3 style="margin-top:0; color:var(--blue)">${s.name}</h3>
-                    <button class="btn btn-web" onclick="window.open('${s.link}', '_blank')">OPEN WEBSITE</button>
-                    <button class="btn btn-ai" style="background:#222; color:#fff; border:1px solid #444;" onclick="openMenu(${i})">AI HELP</button>
+                    <button class="btn btn-web" onclick="window.open('${s.link}', '_blank')"><i class="fas fa-external-link-alt"></i> VISIT SITE</button>
+                    <button class="btn btn-ai" style="background:#222; color:#fff; border:1px solid #444;" onclick="openMenu(${i})"><i class="fas fa-robot"></i> AI HELP</button>
                     <div style="position:absolute; top:15px; right:15px;">
                         <i class="fas fa-edit" style="color:orange; cursor:pointer;" onclick="startEdit(${i})"></i>
                         <i class="fas fa-trash" style="color:red; cursor:pointer; margin-left:12px;" onclick="deleteService(${i})"></i>
@@ -181,15 +189,35 @@
         });
     }
 
-    async function generateMasterGuide() {
+    async function listModels() {
         const key = document.getElementById('apiKey').value;
+        if(!key) return alert("Enter Key!");
+        updateLog("Fetching models...");
+        try {
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
+            const data = await res.json();
+            data.models.forEach(m => updateLog(`Found: ${m.name.replace('models/','')}`, "cyan"));
+        } catch (e) { updateLog("Failed.", "red"); }
+    }
+
+    function showPage(page) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(page + '-page').classList.add('active');
+        if(document.getElementById('btn-'+page)) document.getElementById('btn-'+page).classList.add('active');
+    }
+
+    async function generateMasterGuide() {
+        const key = document.getElementById('apiKey').value || localStorage.getItem('hub_api_key');
         const name = document.getElementById('sName').value;
         const url = document.getElementById('sUrl').value;
         const model = document.getElementById('modelName').value;
-        const systemRules = document.getElementById('sysInst').value;
-        if(!key || !name || !url) return alert("Fill all details!");
-        updateLog(`Generating guide for ${name}...`);
-        const prompt = `${systemRules}\n\nTask: Generate a Malayalam usage guide for the website: ${name} (${url}). Mention exact UI button locations using your knowledge. Use Markdown.`;
+        const rules = document.getElementById('sysInst').value;
+        if(!key || !name || !url) return alert("Fill details!");
+
+        updateLog(`Generating Master Guide for ${name}...`, "yellow"); // ഇൻഡിക്കേഷൻ ചേർത്തു
+
+        const prompt = `${rules}\n\nTask: Comprehensive Guide for ${name} (${url}). Include button locations.`;
         try {
             const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`, {
                 method: 'POST', headers: {'Content-Type': 'application/json'},
@@ -197,32 +225,33 @@
             });
             const data = await res.json();
             document.getElementById('sGuide').value = data.candidates[0].content.parts[0].text;
-            updateLog("Guide generated successfully.", "green");
-        } catch (e) { updateLog("AI Sync Failed.", "red"); }
+            updateLog("Manual ready.", "green");
+        } catch (e) { updateLog("Sync failed.", "red"); }
     }
 
     async function createPersonalNote() {
         const key = localStorage.getItem('hub_api_key');
         const model = localStorage.getItem('hub_model_name');
-        const systemRules = localStorage.getItem('hub_sys_inst') || defaultRules;
+        const rules = localStorage.getItem('hub_sys_inst') || defaultRules;
         const input = document.getElementById('note-input').value;
         const s = services[activeServiceIndex];
         if(!key || !input) return;
         document.getElementById('noteLoader').style.display = 'block';
-        const prompt = `${systemRules}\n\nContext: User is looking at ${s.name} (${s.link}). Question: ${input}. Task: Direct answer with UI button locations. No URLs.`;
+        updateLog(`Generating Personal Note for ${s.name}...`, "yellow");
+        const prompt = `${rules}\n\nService: ${s.name} (${s.link}). Query: ${input}.`;
         try {
             const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`, {
                 method: 'POST', headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
             });
             const data = await res.json();
-            const noteText = data.candidates[0].content.parts[0].text;
             if(!userNotes[activeServiceIndex]) userNotes[activeServiceIndex] = [];
-            userNotes[activeServiceIndex].unshift(noteText);
+            userNotes[activeServiceIndex].unshift(data.candidates[0].content.parts[0].text);
             localStorage.setItem('userNotesHub', JSON.stringify(userNotes));
             document.getElementById('note-input').value = '';
             renderNotes();
-        } catch (e) { alert("AI Error"); }
+            updateLog("Note added.", "green");
+        } catch (e) { updateLog("Error.", "red"); }
         finally { document.getElementById('noteLoader').style.display = 'none'; }
     }
 
@@ -231,13 +260,8 @@
         const link = document.getElementById('sUrl').value.trim();
         const guide = document.getElementById('sGuide').value;
         if(!name || !link) return;
-        if(editIndex === -1) {
-            if(services.find(s => s.name.toLowerCase() === name.toLowerCase())) return alert("Exists!");
-            services.push({name, link, guide});
-        } else {
-            services[editIndex] = {name, link, guide};
-            resetForm();
-        }
+        if(editIndex === -1) services.push({name, link, guide});
+        else { services[editIndex] = {name, link, guide}; resetForm(); }
         localStorage.setItem('myServices', JSON.stringify(services));
         renderHome(); showPage('home');
     }
@@ -252,92 +276,79 @@
         showPage('dev');
     }
 
-    function resetForm() {
-        editIndex = -1;
-        document.getElementById('sName').value = ""; document.getElementById('sUrl').value = ""; document.getElementById('sGuide').value = "";
-        document.getElementById('form-title').innerText = "3. Manage Service";
-    }
+    function resetForm() { editIndex = -1; document.getElementById('sName').value = ""; document.getElementById('sUrl').value = ""; document.getElementById('sGuide').value = ""; document.getElementById('form-title').innerText = "3. Manage Hub Services"; }
 
     function importLocalBackup(e) {
-        const file = e.target.files[0];
-        if (!file) return;
         const reader = new FileReader();
-        reader.onload = function(event) {
-            try {
-                const data = JSON.parse(event.target.result);
-                if (data.services) {
-                    services = Array.isArray(data.services) ? data.services : JSON.parse(data.services);
-                    localStorage.setItem('myServices', JSON.stringify(services));
-                    if (data.notes) {
-                        userNotes = typeof data.notes === 'string' ? JSON.parse(data.notes) : data.notes;
-                        localStorage.setItem('userNotesHub', JSON.stringify(userNotes));
-                    }
-                    updateLog("Local backup imported!", "green");
-                    renderHome();
+        reader.onload = (ev) => {
+            const data = JSON.parse(ev.target.result);
+            if (data.services) {
+                // ഇംപോർട്ട് ഫങ്ക്ഷനുള്ളിൽ ഇത് കൂടി ചേർക്കുക
+if (data.systemInstruction) {
+    localStorage.setItem('hub_sys_inst', data.systemInstruction);
+    document.getElementById('sysInst').value = data.systemInstruction;
+}
+                services = Array.isArray(data.services) ? data.services : JSON.parse(data.services);
+                localStorage.setItem('myServices', JSON.stringify(services));
+                if (data.notes) {
+                    userNotes = typeof data.notes === 'string' ? JSON.parse(data.notes) : data.notes;
+                    localStorage.setItem('userNotesHub', JSON.stringify(userNotes));
                 }
-            } catch (err) { updateLog("Error reading file!", "red"); }
+                renderHome(); updateLog("Restore complete.", "green");
+            }
         };
-        reader.readAsText(file);
+        reader.readAsText(e.target.files[0]);
     }
 
     async function fetchFromCloud() {
         const url = document.getElementById('cloudUrl').value;
-        if(!url) return alert("Enter URL!");
-        updateLog("Fetching Cloud...");
+        if(!url) return;
+        updateLog("Fetching Cloud Data...");
         try {
             const response = await fetch(url);
             const data = await response.json();
-            if(data.services) {
-                services = Array.isArray(data.services) ? data.services : JSON.parse(data.services);
-                localStorage.setItem('myServices', JSON.stringify(services));
-                renderHome();
-                updateLog("Cloud sync complete!", "green");
+            services = Array.isArray(data.services) ? data.services : JSON.parse(data.services);
+            localStorage.setItem('myServices', JSON.stringify(services));
+            if (data.notes) {
+                userNotes = typeof data.notes === 'string' ? JSON.parse(data.notes) : data.notes;
+                localStorage.setItem('userNotesHub', JSON.stringify(userNotes));
             }
-        } catch (e) { updateLog("Cloud failed.", "red"); }
+            renderHome(); updateLog("Cloud Synced.", "green");
+        } catch (e) { updateLog("Sync failed."); }
     }
 
-    function openMenu(index) {
-        activeServiceIndex = index;
-        document.getElementById('menu-title').innerText = services[index].name;
-        renderNotes();
-        showPage('service-menu');
-    }
-
+    function openMenu(index) { activeServiceIndex = index; document.getElementById('menu-title').innerText = services[index].name; renderNotes(); showPage('service-menu'); }
     function renderNotes() {
         const container = document.getElementById('notes-list');
         container.innerHTML = '';
-        const notes = userNotes[activeServiceIndex] || [];
-        notes.forEach(n => {
+        (userNotes[activeServiceIndex] || []).forEach(n => {
             const div = document.createElement('div');
-            div.style.cssText = "background:#222; padding:15px; margin-top:10px; border-radius:8px; cursor:pointer; border-left:4px solid var(--accent);";
+            div.style.cssText = "background:#222; padding:15px; margin-top:10px; border-radius:10px; cursor:pointer; border-left:4px solid var(--accent);";
             div.innerHTML = `<small style="color:var(--accent)">AS-AI Assistance</small><br>${n.substring(0, 80)}...`;
-            div.onclick = () => { 
-                document.getElementById('modal-title').innerText = "AS-AI Guidance"; 
-                document.getElementById('modal-content').innerHTML = marked.parse(n); 
-                document.getElementById('full-view').style.display = 'flex'; 
-            };
+            div.onclick = () => { document.getElementById('modal-title').innerText = "AS-AI Intelligence"; document.getElementById('modal-content').innerHTML = marked.parse(n); document.getElementById('full-view').style.display = 'flex'; };
             container.appendChild(div);
         });
     }
 
     function exportData() {
-        const data = { services: services, notes: userNotes };
-        const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `AS_HUB_Backup.json`;
-        a.click();
-        updateLog("Backup downloaded (API Key excluded).", "yellow");
-    }
+    const dataToExport = {
+        services: services,
+        notes: userNotes,
+        // System Instruction കൂടി ഇവിടെ ചേർക്കുന്നു
+        systemInstruction: localStorage.getItem('hub_sys_inst') || "" 
+    };
+    const blob = new Blob([JSON.stringify(dataToExport)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `backup_as_hub.json`;
+    a.click();
+    updateLog("Backup downloaded with system rules & notes.", "yellow");
+}
 
-    function openMasterGuide() {
-        document.getElementById('modal-title').innerText = services[activeServiceIndex].name;
-        document.getElementById('modal-content').innerHTML = marked.parse(services[activeServiceIndex].guide || "No guide available.");
-        document.getElementById('full-view').style.display = 'flex';
-    }
-
+    function openMasterGuide() { document.getElementById('modal-title').innerText = services[activeServiceIndex].name; document.getElementById('modal-content').innerHTML = marked.parse(services[activeServiceIndex].guide || "No guide."); document.getElementById('full-view').style.display = 'flex'; }
     function closeFullView() { document.getElementById('full-view').style.display = 'none'; }
     function deleteService(index) { if(confirm("Delete?")) { services.splice(index, 1); localStorage.setItem('myServices', JSON.stringify(services)); renderHome(); } }
+    function launchMiniApp() { window.open(window.location.href, "ASHubMini", "width=420,height=750,menubar=no,status=no"); }
 
     renderHome();
 </script>
