@@ -103,7 +103,7 @@
                 <span class="file-input-label">IMPORT LOCAL JSON</span>
                 <input type="file" id="localFileInput" accept=".json" onchange="importLocalBackup(event)">
                 <span class="file-input-label">GITHUB CLOUD SYNC (RAW URL)</span>
-                <input type="text" id="cloudUrl" placeholder="Paste RAW GitHub URL">
+                <input type="text" id="cloudUrl" placeholder="Paste GitHub backup.json URL">
                 <button class="btn btn-web" style="background:var(--accent); color:#000;" onclick="fetchFromCloud()">SYNC FROM CLOUD</button>
                 <button class="btn btn-web" style="background:transparent; border:1px solid var(--blue); color:var(--blue); margin-top:10px;" onclick="exportData()">DOWNLOAD BACKUP</button>
                 <div class="terminal" id="devLog">> AS-System Ready.</div>
@@ -139,7 +139,7 @@
     let editIndex = -1;
     let draggedIndex = null;
 
-    const defaultRules = "";
+    const defaultRules = "You are 'AS-AI', the official digital intelligence of 'AS-WEB-HUB' by 'AS-INVENTIONS'. Always mention precise button locations. Respond in Malayalam.";
 
     document.getElementById('apiKey').value = localStorage.getItem('hub_api_key') || "";
     document.getElementById('modelName').value = localStorage.getItem('hub_model_name') || "gemini-flash-lite-latest";
@@ -214,10 +214,8 @@
         const model = document.getElementById('modelName').value;
         const rules = document.getElementById('sysInst').value;
         if(!key || !name || !url) return alert("Fill details!");
-
-        updateLog(`Generating Master Guide for ${name}...`, "yellow"); // ഇൻഡിക്കേഷൻ ചേർത്തു
-
-        const prompt = `${rules}\n\nTask: Comprehensive Guide for ${name} (${url}). Include button locations.`;
+        updateLog(`Generating Master Guide for ${name}...`, "yellow");
+        const prompt = `${rules}\n\nTask: Guide for ${name} (${url}). Mention button locations.`;
         try {
             const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`, {
                 method: 'POST', headers: {'Content-Type': 'application/json'},
@@ -282,39 +280,48 @@
         const reader = new FileReader();
         reader.onload = (ev) => {
             const data = JSON.parse(ev.target.result);
-            if (data.services) {
-                // ഇംപോർട്ട് ഫങ്ക്ഷനുള്ളിൽ ഇത് കൂടി ചേർക്കുക
-if (data.systemInstruction) {
-    localStorage.setItem('hub_sys_inst', data.systemInstruction);
-    document.getElementById('sysInst').value = data.systemInstruction;
-}
-                services = Array.isArray(data.services) ? data.services : JSON.parse(data.services);
-                localStorage.setItem('myServices', JSON.stringify(services));
-                if (data.notes) {
-                    userNotes = typeof data.notes === 'string' ? JSON.parse(data.notes) : data.notes;
-                    localStorage.setItem('userNotesHub', JSON.stringify(userNotes));
-                }
-                renderHome(); updateLog("Restore complete.", "green");
-            }
+            processData(data);
+            updateLog("Restore complete.", "green");
         };
         reader.readAsText(e.target.files[0]);
     }
 
     async function fetchFromCloud() {
-        const url = document.getElementById('cloudUrl').value;
-        if(!url) return;
-        updateLog("Fetching Cloud Data...");
+        let url = document.getElementById('cloudUrl').value;
+        if(!url) return alert("Enter URL!");
+        
+        // Auto-convert standard GitHub link to RAW link
+        if(url.includes("github.com") && !url.includes("raw.githubusercontent.com")) {
+            url = url.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/");
+        }
+
+        updateLog("Fetching Cloud Data: " + url);
         try {
             const response = await fetch(url);
+            if(!response.ok) throw new Error("HTTP Status " + response.status);
             const data = await response.json();
+            processData(data);
+            updateLog("Cloud Synced Successfully!", "green");
+        } catch (e) { 
+            updateLog("Sync Failed: " + e.message, "red");
+            console.error(e);
+        }
+    }
+
+    function processData(data) {
+        if (data.services) {
             services = Array.isArray(data.services) ? data.services : JSON.parse(data.services);
             localStorage.setItem('myServices', JSON.stringify(services));
-            if (data.notes) {
-                userNotes = typeof data.notes === 'string' ? JSON.parse(data.notes) : data.notes;
-                localStorage.setItem('userNotesHub', JSON.stringify(userNotes));
-            }
-            renderHome(); updateLog("Cloud Synced.", "green");
-        } catch (e) { updateLog("Sync failed."); }
+        }
+        if (data.notes) {
+            userNotes = typeof data.notes === 'string' ? JSON.parse(data.notes) : data.notes;
+            localStorage.setItem('userNotesHub', JSON.stringify(userNotes));
+        }
+        if (data.systemInstruction) {
+            localStorage.setItem('hub_sys_inst', data.systemInstruction);
+            document.getElementById('sysInst').value = data.systemInstruction;
+        }
+        renderHome();
     }
 
     function openMenu(index) { activeServiceIndex = index; document.getElementById('menu-title').innerText = services[index].name; renderNotes(); showPage('service-menu'); }
@@ -325,25 +332,28 @@ if (data.systemInstruction) {
             const div = document.createElement('div');
             div.style.cssText = "background:#222; padding:15px; margin-top:10px; border-radius:10px; cursor:pointer; border-left:4px solid var(--accent);";
             div.innerHTML = `<small style="color:var(--accent)">AS-AI Assistance</small><br>${n.substring(0, 80)}...`;
-            div.onclick = () => { document.getElementById('modal-title').innerText = "AS-AI Intelligence"; document.getElementById('modal-content').innerHTML = marked.parse(n); document.getElementById('full-view').style.display = 'flex'; };
+            div.onclick = () => { 
+                document.getElementById('modal-title').innerText = "AS-AI Intelligence"; 
+                document.getElementById('modal-content').innerHTML = marked.parse(n); 
+                document.getElementById('full-view').style.display = 'flex'; 
+            };
             container.appendChild(div);
         });
     }
 
     function exportData() {
-    const dataToExport = {
-        services: services,
-        notes: userNotes,
-        // System Instruction കൂടി ഇവിടെ ചേർക്കുന്നു
-        systemInstruction: localStorage.getItem('hub_sys_inst') || "" 
-    };
-    const blob = new Blob([JSON.stringify(dataToExport)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `backup_as_hub.json`;
-    a.click();
-    updateLog("Backup downloaded with system rules & notes.", "yellow");
-}
+        const dataToExport = {
+            services: services,
+            notes: userNotes,
+            systemInstruction: localStorage.getItem('hub_sys_inst') || ""
+        };
+        const blob = new Blob([JSON.stringify(dataToExport)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `backup_as_hub.json`;
+        a.click();
+        updateLog("Backup downloaded with personal notes.", "yellow");
+    }
 
     function openMasterGuide() { document.getElementById('modal-title').innerText = services[activeServiceIndex].name; document.getElementById('modal-content').innerHTML = marked.parse(services[activeServiceIndex].guide || "No guide."); document.getElementById('full-view').style.display = 'flex'; }
     function closeFullView() { document.getElementById('full-view').style.display = 'none'; }
